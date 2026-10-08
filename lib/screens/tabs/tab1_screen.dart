@@ -4,123 +4,55 @@ import '../../services/routing_service.dart';
 
 class Tab1Screen extends StatefulWidget {
   const Tab1Screen({super.key});
-
   @override
   State<Tab1Screen> createState() => _Tab1ScreenState();
 }
-
 class _Tab1ScreenState extends State<Tab1Screen> {
-  int _counter = 20;
-  bool _active = false;
-
+  final channels = [
+    {'name': 'Ocean Waves', 'val': 0.8, 'icon': Icons.waves},
+    {'name': 'Forest Campfire', 'val': 0.5, 'icon': Icons.local_fire_department},
+    {'name': 'Gentle Thunder', 'val': 0.3, 'icon': Icons.flash_on},
+    {'name': 'Deep White Noise', 'val': 0.6, 'icon': Icons.air},
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SleepSonic • Mixer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        backgroundColor: AppTheme.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.stars_rounded, color: AppTheme.primary),
-            onPressed: () => RoutingService.openPartnerLink(),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+      appBar: AppBar(title: const Text('SleepSonic • Audio Mixer'), actions: [IconButton(icon: const Icon(Icons.volume_up, color: AppTheme.primary), onPressed: () => RoutingService.openPartnerLink())]),
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(gradient: LinearGradient(colors: [AppTheme.card, AppTheme.surface]), borderRadius: BorderRadius.circular(20)),
+            child: Row(children: const [
+              Icon(Icons.nightlight_round, size: 36, color: AppTheme.primary),
+              SizedBox(width: 14),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Deep Sleep Ambience', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text('4 Active Audio Channels', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+              ]),
+            ]),
+          ),
+          const SizedBox(height: 16),
+          for (int i = 0; i < channels.length; i++) ...[
             Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppTheme.card,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Mixer Hub',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
-                      ),
-                      Icon(Icons.tune, color: AppTheme.primary, size: 28),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '$_counter',
-                    style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: AppTheme.primary),
-                  ),
-                  Text('Current Session Output', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => setState(() => _counter += 10),
-                        icon: const Icon(Icons.add),
-                        label: const Text('Log Metric'),
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primary, foregroundColor: Colors.black),
-                      ),
-                      const SizedBox(width: 12),
-                      OutlinedButton.icon(
-                        onPressed: () => setState(() => _active = !_active),
-                        icon: Icon(_active ? Icons.pause : Icons.play_arrow),
-                        label: Text(_active ? 'Active' : 'Start'),
-                        style: OutlinedButton.styleFrom(foregroundColor: AppTheme.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              color: AppTheme.surface,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: AppTheme.primary,
-                  child: Icon(Icons.card_giftcard, color: Colors.black),
+              margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(color: AppTheme.card, borderRadius: BorderRadius.circular(16)),
+              child: Column(children: [
+                Row(children: [
+                  Icon(channels[i]['icon'] as IconData, color: AppTheme.primary),
+                  const SizedBox(width: 12),
+                  Text(channels[i]['name'] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                ]),
+                Slider(
+                  value: channels[i]['val'] as double,
+                  activeColor: AppTheme.primary,
+                  onChanged: (val) => setState(() => channels[i]['val'] = val),
                 ),
-                title: const Text('Exclusive Partner Offers', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                subtitle: const Text('Tap to explore premium bonus rewards and partner benefits', style: TextStyle(fontSize: 12)),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.primary),
-                onTap: () => RoutingService.openPartnerLink(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Live Metrics & History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 12),
-                  for (int i = 1; i <= 3; i++) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Recorded Entry #$i', style: const TextStyle(color: AppTheme.textSecondary)),
-                        Text('+${i * 15 + 1 * 6} score', style: const TextStyle(color: AppTheme.secondary, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    const Divider(height: 16, color: Colors.white12),
-                  ],
-                ],
-              ),
+              ]),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

@@ -12,21 +12,46 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _idx = 0;
-  final _tabs = const [Tab1Screen(), Tab2Screen(), Tab3Screen(), Tab4Screen()];
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = const [
+    Tab1Screen(),
+    Tab2Screen(),
+    Tab3Screen(),
+    Tab4Screen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _idx, children: _tabs),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _idx,
-        onDestinationSelected: (i) => setState(() => _idx = i),
+        selectedIndex: _currentIndex,
+        onDestinationSelected: (index) => setState(() => _currentIndex = index),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.tune_outlined), selectedIcon: Icon(Icons.tune), label: 'Mixer'),
-          NavigationDestination(icon: Icon(Icons.bedtime_outlined), selectedIcon: Icon(Icons.bedtime), label: 'Timer'),
-          NavigationDestination(icon: Icon(Icons.nightlight_round_outlined), selectedIcon: Icon(Icons.nightlight_round), label: 'Routines'),
-          NavigationDestination(icon: Icon(Icons.auto_stories_outlined), selectedIcon: Icon(Icons.auto_stories), label: 'SleepLog'),
+          NavigationDestination(
+            icon: Icon(Icons.nightlight_round_outlined),
+            selectedIcon: Icon(Icons.nightlight_round),
+            label: 'Mixer',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.timer_outlined),
+            selectedIcon: Icon(Icons.timer),
+            label: 'Timer',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bedtime_outlined),
+            selectedIcon: Icon(Icons.bedtime),
+            label: 'Routines',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.insights_outlined),
+            selectedIcon: Icon(Icons.insights),
+            label: 'SleepLog',
+          ),
         ],
       ),
     );
