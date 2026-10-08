@@ -1,4 +1,4 @@
-package com.pulsefit.workout.hiit
+package com.sleepsonic.relaxing.sounds
 
 import io.flutter.embedding.android.FlutterActivity
 
